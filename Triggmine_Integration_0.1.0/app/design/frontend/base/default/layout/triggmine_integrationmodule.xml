@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+	<!-- @videal -->
+
+	<!-- All pages tracking -->
+	<default>
+		<reference name="before_body_end">
+			<block type="core/template" name="videal_init" after="-" template="videal/triggmine/init.phtml"/>
+		</reference>
+	</default>
+</layout>
+
+

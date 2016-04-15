@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<Triggmine_IntegrationModule>
+			<version>0.1.0</version>
+		</Triggmine_IntegrationModule>
+	</modules>
+	<global>
+		<helpers>
+			<integrationmodule>
+				<class>Triggmine_IntegrationModule_Helper</class>
+			</integrationmodule>
+		</helpers>
+		<blocks>
+			<integrationmodule>
+				<class>Triggmine_IntegrationModule_Block</class>
+			</integrationmodule>
+		</blocks>
+		<models>
+			<integrationmodule>
+				<class>Triggmine_IntegrationModule_Model</class>
+				<resourceModel>integrationmodule_mysql4</resourceModel>
+			</integrationmodule>
+		</models>
+		<events>
+			<checkout_cart_add_product_complete> <!-- identifier of the event we want to catch -->
+				<observers>
+					<checkout_cart_add_product_complete_handler> <!-- identifier of the event handler -->
+						<type>model</type> <!-- class method call type; valid are model, object and singleton -->
+						<class>integrationmodule/observer</class> <!-- observers class alias -->
+						<method>onCartItemAdded</method>  <!-- observer's method to be called -->
+						<args></args> <!-- additional arguments passed to observer -->
+					</checkout_cart_add_product_complete_handler>
+				</observers>
+			</checkout_cart_add_product_complete>
+			<sales_quote_remove_item> <!-- identifier of the event we want to catch -->
+				<observers>
+					<sales_quote_remove_item_handler> <!-- identifier of the event handler -->
+						<type>model</type> <!-- class method call type; valid are model, object and singleton -->
+						<class>integrationmodule/observer</class> <!-- observers class alias -->
+						<method>onCartItemDeleted</method>  <!-- observer's method to be called -->
+						<args></args> <!-- additional arguments passed to observer -->
+					</sales_quote_remove_item_handler>
+				</observers>
+			</sales_quote_remove_item>
+			<sales_order_place_after> <!-- identifier of the event we want to catch -->
+				<observers>
+					<sales_order_place_after_handler> <!-- identifier of the event handler -->
+						<type>model</type> <!-- class method call type; valid are model, object and singleton -->
+						<class>integrationmodule/observer</class> <!-- observers class alias -->
+						<method>onCartPurchased</method>  <!-- observer's method to be called -->
+						<args></args> <!-- additional arguments passed to observer -->
+					</sales_order_place_after_handler>
+				</observers>
+			</sales_order_place_after>
+			<checkout_cart_update_items_before_handler> <!-- identifier of the event we want to catch -->
+				<observers>
+					<checkout_cart_update_items_before_handler_handler> <!-- identifier of the event handler -->
+						<type>model</type> <!-- class method call type; valid are model, object and singleton -->
+						<class>integrationmodule/observer</class> <!-- observers class alias -->
+						<method>onCardUpdated</method>  <!-- observer's method to be called -->
+						<args></args> <!-- additional arguments passed to observer -->
+					</checkout_cart_update_items_before_handler_handler>
+				</observers>
+			</checkout_cart_update_items_before_handler>
+		</events>
+	</global>
+	<admin>
+		<routers>
+			<integrationmodule>
+				<use>admin</use>
+				<args>
+					<module>Triggmine_IntegrationModule</module>
+					<frontName>admin_integrationmodule</frontName>
+				</args>
+			</integrationmodule>
+		</routers>
+	</admin>
+	<adminhtml>
+		<acl>
+			<resources>
+				<all>
+					<title>Allow Everything</title>
+				</all>
+				<admin>
+					<children>
+						<integrationmodule translate="title" module="integrationmodule">
+							<title>IntegrationModule</title>
+							<sort_order>1000</sort_order>
+							<children>
+								<integrationmodulebackend translate="title">
+									<title>Triggmine Settings</title>
+								</integrationmodulebackend>
+							</children>
+						</integrationmodule>
+					</children>
+				</admin>
+			</resources>
+		</acl>
+		<layout>
+			<updates>
+				<integrationmodule>
+					<file>integrationmodule.xml</file>
+				</integrationmodule>
+			</updates>
+		</layout>
+	</adminhtml>
+</config>

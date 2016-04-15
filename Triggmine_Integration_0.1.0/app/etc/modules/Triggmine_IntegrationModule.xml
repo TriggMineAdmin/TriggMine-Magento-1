@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Triggmine_IntegrationModule>
+      <active>true</active>
+      <codePool>community</codePool>
+      <version>0.1.0</version>
+    </Triggmine_IntegrationModule>
+  </modules>
+</config>
