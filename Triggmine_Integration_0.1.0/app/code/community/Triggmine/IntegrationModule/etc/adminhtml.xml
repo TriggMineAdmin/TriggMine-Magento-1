@@ -8,7 +8,7 @@
 							<children>
 								<config>
 									<children>
-										<triggmine translate="title" module="triggmine">
+										<triggmine translate="title" module="integrationmodule">
 											<title>Triggmine Section</title>
 											<sort_order>600</sort_order>
 										</triggmine>

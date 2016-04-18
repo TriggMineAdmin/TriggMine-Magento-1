@@ -65,6 +65,15 @@
 			</checkout_cart_update_items_before_handler>
 		</events>
 	</global>
+	<frontend>
+		<layout>
+			<updates>
+				<videal_triggmine>
+					<file>triggmine_integrationmodule.xml</file>
+				</videal_triggmine>
+			</updates>
+		</layout>
+	</frontend>
 	<admin>
 		<routers>
 			<integrationmodule>

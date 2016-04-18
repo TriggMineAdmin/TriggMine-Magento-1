@@ -1,2 +1,3 @@
-<?php
-Mage::dispatchEvent('frontend_videal_triggmine_footer_event');
+<?php if (Mage::helper('core')->isModuleEnabled('Triggmine_IntegrationModule')) : ?>
+    <script data-main="js/triggmine/integationmodule/scripts/main" src="js/triggmine/integationmodule/scripts/require.js"></script>
+<?php endif; ?>

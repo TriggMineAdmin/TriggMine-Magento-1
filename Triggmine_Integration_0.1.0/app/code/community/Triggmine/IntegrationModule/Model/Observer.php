@@ -1,4 +1,4 @@
-<?php
+ <?php
 class Triggmine_IntegrationModule_Model_Observer
 {
 

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <config>
 	<sections>
-		<triggmine translate="label" module="triggmine">
+		<triggmine translate="label" module="integrationmodule">
 			<label>Triggmine</label>
 			<tab>general</tab>
 			<frontend_type>text</frontend_type>
