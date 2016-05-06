@@ -27,7 +27,7 @@
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 						</is_on>
-						<rest_api translate="label">
+						<!--<rest_api translate="label">
 							<label>Rest api</label>
 							<frontend_type>text</frontend_type>
 							<sort_order>20</sort_order>
@@ -35,15 +35,33 @@
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 							<comment>Put rest api url taken after registration in triggmine.com here.</comment>
-						</rest_api>
-						<token translate="label">
-							<label>Token</label>
+						</rest_api>-->
+						<key translate="label">
+							<label>Public key</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<comment>Put your public key taken after registration in triggmine.com here.</comment>
+						</key>
+						<secret translate="label">
+							<label>Private key</label>
 							<frontend_type>text</frontend_type>
 							<sort_order>30</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
-							<comment>Put token taken after registration in triggmine.com here.</comment>
+							<comment>Here...</comment>
+						</secret>
+						<token translate="label">
+							<label>Token</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>40</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<comment>Here...</comment>
 						</token>
 					</fields>
 				</config>
