@@ -14,4 +14,4 @@ Run the command 'composer update' in 'Magento_Root/lib/Triggmine' directory . Th
 
 Go to System > Cache management  and  flush Magento cache and cache storage.
 
-Go to System > Configuration(General tab) >Ttriggmine and enter the API credentials.
+Go to System > Configuration(General tab) >Triggmine and enter the API credentials.
