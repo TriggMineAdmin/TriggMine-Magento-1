@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<config>
+    <api2>
+        <resource_groups>
+            <integrationmodule translate="title" module="integrationmodule">
+                <title>Triggmine REST</title>
+                <sort_order>10</sort_order>
+                <children>
+                    <integrationmodule_orders translate="title" module="integrationmodule">
+                        <title>Orders</title>
+                        <sort_order>20</sort_order>
+                    </integrationmodule_orders>
+                </children>
+            </integrationmodule>
+        </resource_groups>
+        <resources>
+            <integrationmodule_orders translate="title" module="integrationmodule">
+                <group>integrationmodule</group>
+                <model>integrationmodule/api2_sales_order</model>
+                <working_model>integrationmodule/api2_sales_order</working_model>
+                <!-- <filter>integrationmodule/order/filter</filter>-->
+                <title>Orders</title>
+                <sort_order>30</sort_order>
+                <versions>1</versions>
+                <routes>
+                    <route_entity>
+                        <route>/V1/triggmine/order/:id</route>
+                        <action_type>entity</action_type>
+                    </route_entity>
+                    <!--<route_collection>
+                        <route>/integrationmodule/order/</route>
+                        <action_type>collection</action_type>
+                    </route_collection>-->
+                </routes>
+                <privileges>
+                    <guest>
+                        <retrieve>1</retrieve>
+                        <!--<create>1</create>
+                        <update>1</update>
+                        <delete>1</delete>-->
+                    </guest>
+                </privileges>
+                <attributes translate="grand_total" module="integrationmodule">
+                    <entity_id>Order ID (internal)</entity_id>
+                    <increment_id>Order ID</increment_id>
+                    <created_at>Order Date</created_at>
+                    <status>Order Status</status>
+                    <grand_total>Grand Total</grand_total>
+                </attributes>
+            </integrationmodule_orders>
+        </resources>
+    </api2>
+</config>

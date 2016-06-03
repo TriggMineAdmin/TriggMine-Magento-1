@@ -5,7 +5,11 @@ class Triggmine_IntegrationModule_Model_Observer
 
     public function controllerFrontInitBefore(Varien_Event_Observer $observer)
     {
-        self::init();
+        if (Mage::helper('core')->isModuleEnabled('Triggmine_IntegrationModule')) {
+            self::init();
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -92,7 +96,6 @@ class Triggmine_IntegrationModule_Model_Observer
 
     public function CustomerLogout(Varien_Event_Observer $observer)
     {
-
         try {
             $loginData = Mage::helper('integrationmodule/data')->getCustomerLoginData();
             Mage::log(json_encode($loginData), null, "triggmine-customer.log");
@@ -100,7 +103,6 @@ class Triggmine_IntegrationModule_Model_Observer
         } catch (Exception $e) {
             Mage::log($e, 1, "triggmine-exception-customer.log");
         }
-
     }
 
 }

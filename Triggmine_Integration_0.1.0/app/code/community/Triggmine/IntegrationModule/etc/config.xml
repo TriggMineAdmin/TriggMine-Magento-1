@@ -19,10 +19,11 @@
         <models>
             <integrationmodule>
                 <class>Triggmine_IntegrationModule_Model</class>
-                <resourceModel>integrationmodule_mysql4</resourceModel>
+                <!--<resourceModel>integrationmodule_mysql4</resourceModel>-->
             </integrationmodule>
         </models>
         <events>
+
             <!-- Support the lib/Triggmine/ folder -->
             <controller_front_init_before>
                 <observers>
@@ -140,9 +141,9 @@
     <frontend>
         <layout>
             <updates>
-                <videal_triggmine>
+                <triggmine_integrationmodule>
                     <file>triggmine_integrationmodule.xml</file>
-                </videal_triggmine>
+                </triggmine_integrationmodule>
             </updates>
         </layout>
     </frontend>

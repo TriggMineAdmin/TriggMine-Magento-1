@@ -7,4 +7,9 @@ class Triggmine_IntegrationModule_Adminhtml_IntegrationmodulebackendController e
 	   $this->_title($this->__("Triggmine Settings"));
 	   $this->renderLayout();
     }
+
+    public function importInitAction()
+    {
+        //die('dead');
+    }
 }

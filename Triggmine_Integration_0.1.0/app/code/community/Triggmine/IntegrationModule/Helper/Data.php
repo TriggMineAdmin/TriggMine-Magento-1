@@ -24,18 +24,21 @@ class Triggmine_IntegrationModule_Helper_Data extends Mage_Core_Helper_Abstract
         $this->_customerSession = Mage::getSingleton('customer/session');
         $this->_customerRepository = Mage::getModel("customer/customer");
 
-
-        $this->_commerceClient = new CommerceClient(
-            [
-                'version'     => 'latest',
-  //            'debug'     => true,
-                'credentials' => [
-                    'key'    => $this->getApiPublicKey(),
-                    'secret' => $this->getApiPrivateKey()
+        (self::getApiPublicKey() == false || self::getApiPrivateKey() == false)
+            ? false
+            :
+            $this->_commerceClient = new CommerceClient(
+                [
+                    'version'     => 'latest',
+                    'credentials' => [
+                        'key'    => $this->getApiPublicKey(),
+                        'secret' => $this->getApiPrivateKey()
+                    ],
+                    'http'        => [
+                        'verify' => false
+                    ]
                 ]
-            ]
-        );
-
+            );
     }
 
     /*
@@ -55,12 +58,20 @@ class Triggmine_IntegrationModule_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function getApiPublicKey()
     {
-        return Mage::getStoreConfig(self::XML_PATH_KEY);
+        if (Mage::getStoreConfig(self::XML_PATH_KEY) == "") {
+            return false;
+        } else {
+            return Mage::getStoreConfig(self::XML_PATH_KEY);
+        }
     }
 
     public function getApiPrivateKey()
     {
-        return Mage::getStoreConfig(self::XML_PATH_SECRET);
+        if (Mage::getStoreConfig(self::XML_PATH_SECRET) == "") {
+            return false;
+        } else {
+            return Mage::getStoreConfig(self::XML_PATH_SECRET);
+        }
     }
 
     public function getDeviceId()
@@ -149,7 +160,6 @@ class Triggmine_IntegrationModule_Helper_Data extends Mage_Core_Helper_Abstract
             'customer_id' => $order->getCustomerId(),
             'order_id'    => $order->getId()
         );
-
         return $data;
     }
 
@@ -183,6 +193,7 @@ class Triggmine_IntegrationModule_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function sendLogoutData($logoutData)
     {
+
         $this->_commerceClient->onLogout($logoutData);
     }
 
@@ -190,6 +201,12 @@ class Triggmine_IntegrationModule_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return $this->_commerceClient->onCustomerRegister($registerData);
     }
+
+    public function exportInit()
+    {
+        return true;
+    }
+
 
 }
 	 
