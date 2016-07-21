@@ -7,3 +7,8 @@
 4. Run the command **composer update** in '[Magento_Root]/lib/Triggmine' directory. This will get needed dependencies via Composer.
 5. Go to System > Cache management  and  flush Magento cache and cache storage.
 6. Go to System > Configuration(General tab) >Triggmine and enter the API credentials.
+
+
+If you have any questions or problems installing the plugin, please contact:
+
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PauleHan/TriggmineMagento1?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
