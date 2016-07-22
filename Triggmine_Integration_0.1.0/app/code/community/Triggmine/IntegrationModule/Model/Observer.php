@@ -6,7 +6,9 @@ class Triggmine_IntegrationModule_Model_Observer
     public function controllerFrontInitBefore(Varien_Event_Observer $observer)
     {
         if (Mage::helper('core')->isModuleEnabled('Triggmine_IntegrationModule')) {
+            
             self::init();
+            
         } else {
             return false;
         }
@@ -24,7 +26,33 @@ class Triggmine_IntegrationModule_Model_Observer
         require_once(Mage::getBaseDir('lib') . DS . 'Triggmine' . DS . 'vendor' . DS . 'autoload.php');
     }
 
+    public function send_page_init(Varien_Event_Observer $observer)
+    {   
+        try {
+            $data = Mage::helper('integrationmodule/data')->PageInit($observer);
+            Mage::log(json_encode($data), null, "triggmine-page-init.log");
+            $result = Mage::helper('integrationmodule/data')->onPageInit($data);
+            Mage::log(json_encode($result->toArray()), null, "triggmine-page-init.log");
+        } catch (Exception $e) {
+            Mage::log($e, 1, "triggmine-exception-page-init.log");
+        } 
 
+    }    
+    
+    public function diagnostic_information_updated(Varien_Event_Observer $observer)
+    {   
+        try {
+            $data = Mage::helper('integrationmodule/data')->SoftChek($observer);
+            Mage::log(json_encode($data), null, "triggmine-diagnostics.log");
+            $result = Mage::helper('integrationmodule/data')->onDiagnosticInformationUpdated($data);
+            Mage::log(json_encode($result->toArray()), null, "triggmine-diagnostics.log");
+        } catch (Exception $e) {
+            Mage::log($e, 1, "triggmine-exception-diagnostics.log");
+        } 
+
+    }
+    
+    
     public function SalesOrderPlaceAfter(Varien_Event_Observer $observer)
     {
         try {

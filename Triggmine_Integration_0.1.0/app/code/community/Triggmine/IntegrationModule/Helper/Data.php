@@ -54,24 +54,25 @@ class Triggmine_IntegrationModule_Helper_Data extends Mage_Core_Helper_Abstract
          return $api_key ? $api_key : false;
      }
  */
-    /*   */
 
     public function getApiPublicKey()
     {
-        if (Mage::getStoreConfig(self::XML_PATH_KEY) == "") {
-            return false;
-        } else {
-            return Mage::getStoreConfig(self::XML_PATH_KEY);
-        }
+        // if (Mage::getStoreConfig(self::XML_PATH_KEY) == "") {
+        //     return false;
+        // } else {
+        //     return Mage::getStoreConfig(self::XML_PATH_KEY);
+        // }
+        return 'key1';
     }
 
     public function getApiPrivateKey()
     {
-        if (Mage::getStoreConfig(self::XML_PATH_SECRET) == "") {
-            return false;
-        } else {
-            return Mage::getStoreConfig(self::XML_PATH_SECRET);
-        }
+        // if (Mage::getStoreConfig(self::XML_PATH_SECRET) == "") {
+        //     return false;
+        // } else {
+        //     return Mage::getStoreConfig(self::XML_PATH_SECRET);
+        // }
+        return 'key2';
     }
 
     public function getDeviceId()
@@ -193,7 +194,6 @@ class Triggmine_IntegrationModule_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function sendLogoutData($logoutData)
     {
-
         $this->_commerceClient->onLogout($logoutData);
     }
 
@@ -207,6 +207,44 @@ class Triggmine_IntegrationModule_Helper_Data extends Mage_Core_Helper_Abstract
         return true;
     }
 
+    public function SoftChek($observer)
+    {
+        $versin     = Mage::getVersion();
+        $datetime   = Mage::getModel('core/date')->date('Y-m-d\TH:i:s');
+        
+        $data = array(
+            'dateCreated'       => $datetime,
+            'diagnosticType'    => "InstallPlugin",
+            'description'       => "Magento " . $versin,
+            'status'            => "0"
+        );
 
+        return $data;
+    }
+    
+    public function onDiagnosticInformationUpdated($softData)
+    {
+        return $this->_commerceClient->onDiagnosticInformationUpdated($softData);
+    }
+    
+    public function PageInit($observer)
+    {
+        $http   = Mage::helper('core/http');
+        $url    = Mage::helper('core/url');
+        
+        $data = array(
+          "device_id"       => $this->getDeviceId(),
+          "device_id_1"     => $this->getDeviceId_1(),
+          "user_agent"      => $http->getHttpUserAgent(),
+          "referrer"        => $http->getHttpReferer(),
+          "location"        => $url->getCurrentUrl()
+        );
+
+        return $data;
+    }
+    
+    public function onPageInit($pageData)
+    {
+        return $this->_commerceClient->onPageInit($pageData);
+    }
 }
-	 
