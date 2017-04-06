@@ -1,18 +1,21 @@
-!/.gitignore
+# Ignore everything
+*
+
+# Must Have
+!.gitignore
+!README.md
 
 # Magento Global Configuration
-!/app/etc/modules/Triggmine_IntegrationModule.xml
+!app/etc/modules/Triggmine_IntegrationModule.xml
 
 # Magento Community module file
-!/app/code/community/Triggmine/*
+!app/code/community/Triggmine/*
 
 # Magento User Interface (layouts)
-!/app/design/frontend/base/default/layout/triggmine_integrationmodule.xml
+!app/design/frontend/base/default/layout/triggmine_integrationmodule.xml
 
 # Magento User Interface (templates)
-!/app/design/frontend/base/default/template/triggmine/integrationmodule/init.phtml
+!app/design/frontend/base/default/template/triggmine/integrationmodule/init.phtml
 
 # Magento Other web accessible file
-!/js/triggmine/*
-
-/*
+!js/triggmine/*
