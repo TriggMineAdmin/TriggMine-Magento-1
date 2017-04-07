@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<layout version="3.0.13.2">
+	<default>
+		<reference name="before_body_end">
+			<block type="core/template" name="triggmine_init" after="-" template="triggmine/integrationmodule/init.phtml"/>
+		</reference>
+	</default>
+</layout>

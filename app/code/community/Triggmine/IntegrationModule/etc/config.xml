@@ -1,0 +1,157 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Triggmine_IntegrationModule>
+            <version>3.0.13.2</version>
+        </Triggmine_IntegrationModule>
+    </modules>
+    <global>
+        <helpers>
+            <integrationmodule>
+                <class>Triggmine_IntegrationModule_Helper</class>
+            </integrationmodule>
+        </helpers>
+        <blocks>
+            <integrationmodule>
+                <class>Triggmine_IntegrationModule_Block</class>
+            </integrationmodule>
+        </blocks>
+        <models>
+            <integrationmodule>
+                <class>Triggmine_IntegrationModule_Model</class>
+            </integrationmodule>
+        </models>
+        <events>
+            <catalog_controller_product_init>
+                <observers>
+                    <send_page_init_observer>
+                        <type>model</type>
+                        <class>integrationmodule/observer</class>
+                        <method>send_page_init</method>
+                    </send_page_init_observer>
+                </observers>
+            </catalog_controller_product_init>
+            <admin_system_config_changed_section_triggmine> <!-- identifier of the event we want to catch -->
+                <observers>
+                    <application_clean_cache_handler>
+                        <type>model</type>
+                        <class>integrationmodule/observer</class>
+                        <method>diagnostic_information_updated</method>
+                    </application_clean_cache_handler>
+                    <export_order_history_handler>
+                        <type>model</type>
+                        <class>integrationmodule/observer</class>
+                        <method>export_order_history</method>
+                    </export_order_history_handler>
+                    <export_customer_history_handler>
+                        <type>model</type>
+                        <class>integrationmodule/observer</class>
+                        <method>export_customer_history</method>
+                    </export_customer_history_handler>
+                </observers>
+            </admin_system_config_changed_section_triggmine>
+            <checkout_cart_add_product_complete> <!-- identifier of the event we want to catch -->
+                <observers>
+                    <checkout_cart_add_product_complete_handler> <!-- identifier of the event handler -->
+                        <type>model</type><!-- class method call type; valid are model, object and singleton -->
+                        <class>integrationmodule/observer</class> <!-- observers class alias -->
+                        <method>CheckoutCartSaveAfter</method>  <!-- observer's method to be called -->
+                        <args></args> <!-- additional arguments passed to observer -->
+                    </checkout_cart_add_product_complete_handler>
+                </observers>
+            </checkout_cart_add_product_complete>
+            <checkout_cart_update_items_after> <!-- identifier of the event we want to catch -->
+                <observers>
+                    <checkout_cart_update_items_after_handler> <!-- identifier of the event handler -->
+                        <type>model</type> <!-- class method call type; valid are model, object and singleton -->
+                        <class>integrationmodule/observer</class> <!-- observers class alias -->
+                        <method>CheckoutCartSaveAfter</method>  <!-- observer's method to be called -->
+                        <args></args> <!-- additional arguments passed to observer -->
+                    </checkout_cart_update_items_after_handler>
+                </observers>
+            </checkout_cart_update_items_after>
+            <sales_quote_remove_item> <!-- identifier of the event we want to catch -->
+                <observers>
+                    <sales_quote_remove_item_handler> <!-- identifier of the event handler -->
+                        <type>model</type> <!-- class method call type; valid are model, object and singleton -->
+                        <class>integrationmodule/observer</class> <!-- observers class alias -->
+                        <method>CheckoutCartSaveAfter</method><!-- observer's method to be called -->
+                        <args></args><!-- additional arguments passed to observer -->
+                    </sales_quote_remove_item_handler>
+                </observers>
+            </sales_quote_remove_item>
+            <sales_order_place_after> <!-- identifier of the event we want to catch -->
+                <observers>
+                    <sales_order_place_after_handler> <!-- identifier of the event handler -->
+                        <type>model</type> <!-- class method call type; valid are model, object and singleton -->
+                        <class>integrationmodule/observer</class> <!-- observers class alias -->
+                        <method>SalesOrderPlaceAfter</method>  <!-- observer's method to be called -->
+                        <args></args> <!-- additional arguments passed to observer -->
+                    </sales_order_place_after_handler>
+                </observers>
+            </sales_order_place_after>
+            <customer_login> <!-- identifier of the event we want to catch -->
+                <observers>
+                    <customer_login_handler> <!-- identifier of the event handler -->
+                        <type>model</type>
+                        <!-- class method call type; valid are model, object and singleton -->
+                        <class>integrationmodule/observer</class>
+                        <!-- observers class alias -->
+                        <method>CustomerLogin</method>
+                        <!-- observer's method to be called -->
+                        <args></args>
+                        <!-- additional arguments passed to observer -->
+                    </customer_login_handler>
+                </observers>
+            </customer_login>
+            <customer_register_success> <!-- identifier of the event we want to catch -->
+                <observers>
+                    <customer_register_success_handler> <!-- identifier of the event handler -->
+                        <type>model</type>
+                        <!-- class method call type; valid are model, object and singleton -->
+                        <class>integrationmodule/observer</class>
+                        <!-- observers class alias -->
+                        <method>CustomerRegisterSuccess</method>
+                        <!-- observer's method to be called -->
+                        <args></args>
+                        <!-- additional arguments passed to observer -->
+                    </customer_register_success_handler>
+                </observers>
+            </customer_register_success>
+            <customer_logout> <!-- identifier of the event we want to catch -->
+                <observers>
+                    <customer_logout_handler> <!-- identifier of the event handler -->
+                        <type>model</type>
+                        <!-- class method call type; valid are model, object and singleton -->
+                        <class>integrationmodule/observer</class>
+                        <!-- observers class alias -->
+                        <method>CustomerLogout</method>
+                        <!-- observer's method to be called -->
+                        <args></args>
+                        <!-- additional arguments passed to observer -->
+                    </customer_logout_handler>
+                </observers>
+            </customer_logout>
+        </events>
+    </global>
+    <frontend>
+        <layout>
+            <updates>
+                <triggmine_integrationmodule>
+                    <file>triggmine_integrationmodule.xml</file>
+                </triggmine_integrationmodule>
+            </updates>
+        </layout>
+    </frontend>
+    <admin>
+        <routers>
+            <integrationmodule>
+                <use>admin</use>
+                <args>
+                    <module>Triggmine_IntegrationModule</module>
+                    <frontName>admin_integrationmodule</frontName>
+                </args>
+            </integrationmodule>
+        </routers>
+    </admin>
+</config>
