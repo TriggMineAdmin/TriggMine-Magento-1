@@ -3,7 +3,7 @@
 
 # Must Have
 !.gitignore
-!README.md
+!README.MD
 
 # Magento Global Configuration
 !/app
