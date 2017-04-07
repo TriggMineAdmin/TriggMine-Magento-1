@@ -1,0 +1,145 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <triggmine translate="label" module="integrationmodule">
+            <label>TriggMine</label>
+            <tab>general</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>600</sort_order>
+            <show_in_default>0</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>0</show_in_store>
+            <groups>
+                <info>
+                    <frontend_model>integrationmodule/adminhtml_system_config_info</frontend_model>
+                    <sort_order>0</sort_order>
+                    <show_in_default>0</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>0</show_in_store>
+                </info>
+                <settings translate="label">
+                    <label>TriggMine Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <is_on translate="label">
+                            <label>Enable TriggMine</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </is_on>
+                        <url_api translate="label">
+                            <label>API URL</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[Don't have an account? <a href="https://client.triggmine.com/signup" target="_blank">Start your free trial</a>]]></comment>
+                        </url_api>
+                        <token translate="label">
+                            <label>API key</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[Don't have an account? <a href="https://client.triggmine.com/signup" target="_blank">Start your free trial</a>]]></comment>
+                        </token>
+                    </fields>
+                </settings>
+                <triggmine_order_export translate="label" module="integrationmodule">
+                    <label>Export orders history</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>20</sort_order>
+                    <show_in_default>0</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <export translate="label">
+                            <label>Enable Order Export</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </export>
+                        <my_date_from translate="label">
+                            <label>Export date from</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>integrationmodule/adminhtml_system_config_date</frontend_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Set the Date from to export orders</comment>
+                        </my_date_from>
+                        <my_date_to translate="label">
+                            <label>Export date to</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>integrationmodule/adminhtml_system_config_date</frontend_model>
+                            <sort_order>70</sort_order>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Set the Date to to export orders</comment>
+                        </my_date_to>
+                    </fields>
+                </triggmine_order_export>
+                <triggmine_customer_export translate="label" module="integrationmodule">
+                    <label>Export customers history</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>80</sort_order>
+                    <show_in_default>0</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <export translate="label">
+                            <label>Enable Customer Export</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </export>
+                        <my_date_from translate="label">
+                            <label>Export date from</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>integrationmodule/adminhtml_system_config_date</frontend_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Set the Date from to export customers</comment>
+                        </my_date_from>
+                        <my_date_to translate="label">
+                            <label>Export date to</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>integrationmodule/adminhtml_system_config_date</frontend_model>
+                            <sort_order>70</sort_order>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Set the Date to to export customers</comment>
+                        </my_date_to>
+                    </fields>
+                </triggmine_customer_export>
+                <footer>
+                    <frontend_model>integrationmodule/adminhtml_system_config_footer</frontend_model>
+                    <sort_order>100</sort_order>
+                    <show_in_default>0</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>0</show_in_store>
+                </footer>
+            </groups>
+        </triggmine>
+    </sections>
+</config>

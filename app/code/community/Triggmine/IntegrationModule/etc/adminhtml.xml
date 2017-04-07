@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+	<config>
+		<!--<menu>
+            <integrationmodule translate="title" module="integrationmodule">
+                <title>TriggMine</title>
+                <sort_order>1000</sort_order>
+                <children>
+                    <integrationmodulebackend translate="title">
+                        <title>TriggMine Settings</title>
+                        <action>integrationmodule/adminhtml_intmodulebackend</action>
+                    </integrationmodulebackend>
+                </children>
+            </integrationmodule>
+        </menu>-->
+		<acl>
+			<resources>
+				<all>
+					<title>Allow Everything</title>
+				</all>
+				<admin>
+					<children>
+						<system>
+							<children>
+								<config>
+									<children>
+										<triggmine translate="title" module="integrationmodule">
+											<title>TriggMine Section</title>
+											<sort_order>600</sort_order>
+										</triggmine>
+									</children>
+								</config>
+							</children>
+						</system>
+					</children>
+				</admin>
+			</resources>
+		</acl>
+	</config>

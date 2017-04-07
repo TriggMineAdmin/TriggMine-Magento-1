@@ -1,0 +1,11 @@
+<?php if (Mage::helper('core')->isModuleEnabled('Triggmine_IntegrationModule') && Mage::helper('integrationmodule/data')->isEnabled()) : ?>
+<!--<script type="text/javascript" src="<?php echo Mage::getBaseUrl('js'); ?>triggmine/integationmodule/scripts/triggmine-scripts.js"></script>-->
+<script data-main="<?php echo Mage::getBaseUrl('js'); ?>triggmine/integationmodule/scripts/main" src="<?php echo Mage::getBaseUrl('js'); ?>triggmine/integationmodule/scripts/require.js"></script>
+<?php else: ?>
+<!-- TriggMine module is not used! -->
+<script type="text/javascript">
+//<![CDATA[
+    console.warn("TriggMine module is not used!");
+//]]
+</script>
+<?php endif; ?>
