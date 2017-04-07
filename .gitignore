@@ -10,6 +10,7 @@
 
 # Magento Community module file
 !app/code/community/Triggmine
+!app/code/community/Triggmine/IntegrationModule/Block/Adminhtml/System/Config
 
 # Magento User Interface (layouts)
 !app/design/frontend/base/default/layout/triggmine_integrationmodule.xml
