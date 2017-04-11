@@ -13,7 +13,7 @@ class Triggmine_IntegrationModule_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_CUSTOMER_EXPORT       = 'triggmine/triggmine_customer_export/export';
     const XML_PATH_CUSTOMER_DATE_FROM    = 'triggmine/triggmine_customer_export/my_date_from';
     const XML_PATH_CUSTOMER_DATE_TO      = 'triggmine/triggmine_customer_export/my_date_to';
-    const VERSION_PLUGIN                 = '3.0.13.2';
+    const VERSION_PLUGIN                 = '3.0.14.1';
 
     protected $_cartItemRepository;
     protected $_customerRepository;
