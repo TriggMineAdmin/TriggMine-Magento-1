@@ -10,8 +10,6 @@ class Triggmine_IntegrationModule_Model_Observer
             
             if ($data) {
                 $res = Mage::helper('integrationmodule/data')->onPageInit($data);
-                Mage::log(json_encode($data), null, 'log1.log');
-                Mage::log(json_encode($res), null, 'log1.log');
             }
         }
     }    
@@ -20,7 +18,6 @@ class Triggmine_IntegrationModule_Model_Observer
     {   
         $data = Mage::helper('integrationmodule/data')->SoftChek($observer);
         $res = Mage::helper('integrationmodule/data')->onDiagnosticInformationUpdated($data);
-        Mage::log(json_encode($data), null, 'log2.log');
         
         if ($res["status"] === 503)
         {   
@@ -39,7 +36,6 @@ class Triggmine_IntegrationModule_Model_Observer
         {
             $data = Mage::helper('integrationmodule/data')->getOrderHistory($observer);
             Mage::helper('integrationmodule/data')->exportOrderHistory($data);
-            Mage::log(json_encode($data), null, 'log3.log');
         }
     }
     
@@ -60,7 +56,6 @@ class Triggmine_IntegrationModule_Model_Observer
         {
             $data = Mage::helper('integrationmodule/data')->getOrderData($observer);
             Mage::helper('integrationmodule/data')->onConvertCartToOrder($data);
-            Mage::log(json_encode($data), null, 'log4.log');
         }
     }
 
@@ -70,7 +65,6 @@ class Triggmine_IntegrationModule_Model_Observer
         {
             $data = Mage::helper('integrationmodule/data')->getCartData();
             Mage::helper('integrationmodule/data')->sendCart($data);
-            Mage::log(json_encode($data), null, 'log5.log');
         }
     }
 
@@ -82,7 +76,6 @@ class Triggmine_IntegrationModule_Model_Observer
             
             $data = Mage::helper('integrationmodule/data')->getCustomerRegisterData($event);
             Mage::helper('integrationmodule/data')->sendRegisterData($data);
-            Mage::log(json_encode($data), null, 'log6.log');
         }
     }
 
@@ -92,7 +85,6 @@ class Triggmine_IntegrationModule_Model_Observer
         {
             $data = Mage::helper('integrationmodule/data')->getCustomerLoginData();
             Mage::helper('integrationmodule/data')->sendLoginData($data);
-            Mage::log(json_encode($data), null, 'log7.log');
         }
     }
 
@@ -102,7 +94,6 @@ class Triggmine_IntegrationModule_Model_Observer
         {
             $data = Mage::helper('integrationmodule/data')->getCustomerLoginData();
             Mage::helper('integrationmodule/data')->sendLogoutData($data);
-            Mage::log(json_encode($data), null, 'log8.log');
         }
     }
 }
