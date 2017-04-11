@@ -460,15 +460,18 @@ class Triggmine_IntegrationModule_Helper_Data extends Mage_Core_Helper_Abstract
         if ($this->getDeviceId() && $this->getDeviceId_1() && !$isAdmin) {
             
             $customerData   = Mage::getModel('customer/customer')->load($customerId);
+            $firstName      = empty($customerData->getFirstname()) ? "" : $customerData->getFirstname();
+            $lastName       = empty($customerData->getLastname()) ? "" : $customerData->getLastname();
+            $email          = empty($customerData->getEmail()) ? "" : $customerData->getEmail();
             $dateCreated    = $customerId ? date('Y/m/d h:m:s', $customerData->getCreatedAtTimestamp()) : null;
             
             $customer = array(
                 "device_id"             => $this->getDeviceId(),
                 "device_id_1"           => $this->getDeviceId_1(),
                 "customer_id"           => $customerId,
-                "customer_first_name"   => $customerData->getFirstname(),
-                "customer_last_name"    => $customerData->getLastname(),
-                "customer_email"        => $customerData->getEmail(),
+                "customer_first_name"   => $firstName,
+                "customer_last_name"    => $lastName,
+                "customer_email"        => $email,
                 "customer_date_created" => $dateCreated
             );
             
