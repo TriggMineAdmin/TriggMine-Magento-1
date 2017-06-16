@@ -7,9 +7,9 @@ class Triggmine_IntegrationModule_Model_Observer
         if (Mage::helper('integrationmodule/data')->isEnabled())
         {
             $data = Mage::helper('integrationmodule/data')->PageInit($observer);
-            
+            Mage::log(json_encode($data), null, 'pageinit.log');
             if ($data) {
-                $res = Mage::helper('integrationmodule/data')->onPageInit($data);
+                Mage::helper('integrationmodule/data')->onPageInit($data);
             }
         }
     }    

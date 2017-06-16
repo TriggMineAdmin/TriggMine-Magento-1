@@ -151,7 +151,7 @@ class Triggmine_IntegrationModule_Helper_Data extends Mage_Core_Helper_Abstract
     {   
         $cart           = Mage::getSingleton('checkout/session');
         $customer       = Mage::getSingleton('customer/session');
-        $products       = $cart->getQuote()->getItemsCollection();
+        $products       = $cart->getQuote()->getAllItems();
         $customerId     = $customer->getCustomer()->getId();
         $customerData   = Mage::getModel('customer/customer')->load($customerId);
         $dateCreated    = $customerId ? date('Y/m/d h:m:s', $customerData->getCreatedAtTimestamp()) : null;
@@ -168,16 +168,16 @@ class Triggmine_IntegrationModule_Helper_Data extends Mage_Core_Helper_Abstract
         
         $data = array(
             'customer'    => $customer,
-            'order_id'    => $cart->getQuoteId(), // cart id
-            'price_total' => sprintf('%01.2f', $cart->getQuote()->getGrandTotal()),
-            'qty_total'   => Mage::helper('checkout/cart')->getItemsCount(),
+            'order_id'    => null,
+            'price_total' => $products ? sprintf('%01.2f', $cart->getQuote()->getGrandTotal()) : 0,
+            'qty_total'   => $products ? Mage::helper('checkout/cart')->getItemsCount() : 0,
             'products'    => array()
         );
         
         foreach ($products as $product)
         {   
             // to prevent duplicate entries for configurable product - consider only child simple products
-            if($product->getProductType() == "simple")
+            if($product->getProductType() !== "configurable")
             {
                 $catalogProduct     = $product->getProduct();
                 $productId          = $catalogProduct->getId();
@@ -284,7 +284,7 @@ class Triggmine_IntegrationModule_Helper_Data extends Mage_Core_Helper_Abstract
         foreach($orderItems as $item)
         {
             // to prevent duplicate entries for configurable product - consider only child simple products
-            if($item->getProductType() == "simple")
+            if($item->getProductType() !== "configurable")
             {
             
                 $catalogProduct         = $item->getProduct();
@@ -544,7 +544,7 @@ class Triggmine_IntegrationModule_Helper_Data extends Mage_Core_Helper_Abstract
             foreach($orderItems as $item) {
                 
                 // to prevent duplicate entries for configurable product - consider only child simple products
-                if($item->getProductType() == "simple")
+                if($item->getProductType() !== "configurable")
                 {
                 
                     $catalogProduct     = $item->getProduct();
