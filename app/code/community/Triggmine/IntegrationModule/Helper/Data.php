@@ -33,8 +33,8 @@ class Triggmine_IntegrationModule_Helper_Data extends Mage_Core_Helper_Abstract
     protected $_enableCustomerExport;
     protected $_exportCustomerFromDate;
     protected $_exportCustomerToDate;
-    protected $_pluginSetUp;
     protected $_enableProductExport;
+    protected $_pluginSetUp;
 
     public function __construct()
     {
