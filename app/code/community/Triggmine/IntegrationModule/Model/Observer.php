@@ -7,7 +7,6 @@ class Triggmine_IntegrationModule_Model_Observer
         if (Mage::helper('integrationmodule/data')->isEnabled())
         {
             $data = Mage::helper('integrationmodule/data')->PageInit($observer);
-            Mage::log(json_encode($data), null, 'pageinit.log');
             if ($data) {
                 Mage::helper('integrationmodule/data')->onPageInit($data);
             }
@@ -45,8 +44,7 @@ class Triggmine_IntegrationModule_Model_Observer
             Mage::helper('integrationmodule/data')->exportCustomerEnabled())
         {
             $data = Mage::helper('integrationmodule/data')->getCustomerHistory($observer);
-            Mage::log(json_encode($data), null, 'export.log');
-            //Mage::helper('integrationmodule/data')->exportCustomerHistory($data);
+            Mage::helper('integrationmodule/data')->exportCustomerHistory($data);
         }
     }
 
@@ -94,6 +92,24 @@ class Triggmine_IntegrationModule_Model_Observer
         {
             $data = Mage::helper('integrationmodule/data')->getCustomerLoginData();
             Mage::helper('integrationmodule/data')->sendLogoutData($data);
+        }
+    }
+    
+    public function CatalogProductSaveAfter(Varien_Event_Observer $observer)
+    {
+        if (Mage::helper('integrationmodule/data')->isEnabledByProduct($observer))
+        {
+            // $websites = Mage::helper('integrationmodule/data')->isEnabledByProduct($observer);
+            // foreach ($websites as $websiteId)
+            // {
+            //     $url   = Mage::app()->getWebsite($websiteId)->getConfig('triggmine/settings/url_api');
+            //     $token = Mage::app()->getWebsite($websiteId)->getConfig('triggmine/settings/token');
+
+            //     $data = Mage::helper('integrationmodule/data')->getProductData($observer);
+            //     Mage::log(json_encode($data), null, 'export.log');
+            //     $res=Mage::helper('integrationmodule/data')->exportProductData($data, $url, $token);
+            //     Mage::log($res, null, 'export.log');
+            // }
         }
     }
 }

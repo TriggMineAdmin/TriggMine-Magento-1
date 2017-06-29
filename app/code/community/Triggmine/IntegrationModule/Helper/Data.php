@@ -13,7 +13,9 @@ class Triggmine_IntegrationModule_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_CUSTOMER_EXPORT       = 'triggmine/triggmine_customer_export/export';
     const XML_PATH_CUSTOMER_DATE_FROM    = 'triggmine/triggmine_customer_export/my_date_from';
     const XML_PATH_CUSTOMER_DATE_TO      = 'triggmine/triggmine_customer_export/my_date_to';
-    const VERSION_PLUGIN                 = '3.0.14.1';
+    const XML_PATH_PRODUCT_EXPORT        = 'triggmine/triggmine_product_export/export';
+    const XML_PATH_PLUGIN_SET_UP         = 'triggmine/settings/plugin_set_up'; // 0 if it's the first time user installs the plugin, 1 if it's set up and product export is already performed
+    const VERSION_PLUGIN                 = '3.0.19';
 
     protected $_cartItemRepository;
     protected $_customerRepository;
@@ -31,6 +33,8 @@ class Triggmine_IntegrationModule_Helper_Data extends Mage_Core_Helper_Abstract
     protected $_enableCustomerExport;
     protected $_exportCustomerFromDate;
     protected $_exportCustomerToDate;
+    protected $_pluginSetUp;
+    protected $_enableProductExport;
 
     public function __construct()
     {
@@ -51,12 +55,17 @@ class Triggmine_IntegrationModule_Helper_Data extends Mage_Core_Helper_Abstract
         $this->_enableCustomerExport   = Mage::app()->getWebsite($this->_websiteId)->getConfig(self::XML_PATH_CUSTOMER_EXPORT);
         $this->_exportCustomerFromDate = Mage::app()->getWebsite($this->_websiteId)->getConfig(self::XML_PATH_CUSTOMER_DATE_FROM);
         $this->_exportCustomerToDate   = Mage::app()->getWebsite($this->_websiteId)->getConfig(self::XML_PATH_CUSTOMER_DATE_TO);
+        $this->_enableProductExport    = Mage::app()->getWebsite($this->_websiteId)->getConfig(self::XML_PATH_PRODUCT_EXPORT);
+        $this->_pluginSetUp            = Mage::app()->getWebsite($this->_websiteId)->getConfig(self::XML_PATH_PLUGIN_SET_UP);
     }
     
-    public function apiClient($data, $method)
+    public function apiClient($data, $method, $url = null, $token = null)
     {
         
-        if ($this->_url == "")
+        $url   = $url ? $url : $this->_url;
+        $token = $token ? $token : $this->_token;
+
+        if ($url == "")
         {
             $res = array(
                 "status"    => 0,
@@ -65,7 +74,7 @@ class Triggmine_IntegrationModule_Helper_Data extends Mage_Core_Helper_Abstract
         }
         else
         {
-            $target = "https://" . $this->_url . "/" . $method;
+            $target = "https://" . $url . "/" . $method;
     
             $data_string = json_encode($data);
             
@@ -78,7 +87,7 @@ class Triggmine_IntegrationModule_Helper_Data extends Mage_Core_Helper_Abstract
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(                  
                 'Content-Type: application/json',
-                'ApiKey: ' . $this->_token,
+                'ApiKey: ' . $token,
                 'Content-Length: ' . strlen($data_string))
             );
             
@@ -96,8 +105,73 @@ class Triggmine_IntegrationModule_Helper_Data extends Mage_Core_Helper_Abstract
     }
     
     public function isEnabled()
-    {
+    {   
         return ($this->_pluginOn && !empty($this->_token)) ? true : false;
+    }
+    
+    public function isEnabledByProduct($observer)
+    {
+        // to check if pugin enabled in product add/edit page
+        // if TriggMine is found, returns website ids where it's properly installed
+        
+        $res = false;
+
+        if (Mage::helper('core')->isModuleEnabled('Triggmine_IntegrationModule'))
+        {
+            $product    = $observer->getEvent()->getProduct();
+            $websiteIds = $product->getWebsiteIds();
+
+            foreach ($websiteIds as $websiteId)
+            {
+                $pluginOn = Mage::app()->getWebsite($websiteId)->getConfig(self::XML_PATH_ENABLED);
+                $token    = Mage::app()->getWebsite($websiteId)->getConfig(self::XML_PATH_URL_API);
+                if ($pluginOn && !empty($token))
+                {
+                    $res[] = $websiteId;
+                }
+            }
+        }
+        else
+        {
+            $res = false;
+        }
+
+        return $res;
+    }
+    
+    public function getProductGroupPrices($product, $priceType = 'group')
+    {   
+        // also can be used to get tier prices
+        
+        $resource = Mage::getSingleton('core/resource');
+        $readConnection = $resource->getConnection('core_read');
+        $query = 'SELECT * FROM ' . $resource->getTableName('catalog_product_entity_' . $priceType . '_price') . 
+                    ' WHERE entity_id=' . $product->getId();
+        $groupPrices = $readConnection->fetchAll($query);
+        
+        return $groupPrices;
+    }
+    
+    public function buildPriceItem($product, $priceObj = null)
+    {
+        $priceId = isset($priceObj['value_id']) ? $priceObj['value_id'] : "";
+        $priceValue = $priceObj ? $priceObj['value'] : $product->getSpecialPrice();
+        $priceActiveFrom = $priceObj ? null : $product->getSpecialFromDate();
+        $priceActiveTo = $priceObj ? null : $product->getSpecialToDate();
+        $priceCustomerGroup = isset($priceObj['customer_group_id']) ? $priceObj['customer_group_id'] : null;
+        $priceQty = isset($priceObj['qty']) ? $priceObj['qty'] : null;
+
+        $productPrice = array(
+                    'price_id'             => $priceId,
+                    'price_value'          => $priceValue,
+                    'price_priority'       => null,
+                    'price_active_from'    => $priceActiveFrom,
+                    'price_active_to'      => $priceActiveTo,
+                    'price_customer_group' => $priceCustomerGroup,
+                    'price_quantity'       => $priceQty
+                );
+        
+        return $productPrice;
     }
     
     public function exportOrderEnabled()
@@ -164,7 +238,7 @@ class Triggmine_IntegrationModule_Helper_Data extends Mage_Core_Helper_Abstract
             'customer_last_name'    => $customerData->getLastname(),
             'customer_email'        => $customerData->getEmail(),
             'customer_date_created' => $dateCreated
-        );
+        ); 
         
         $data = array(
             'customer'    => $customer,
@@ -648,5 +722,198 @@ class Triggmine_IntegrationModule_Helper_Data extends Mage_Core_Helper_Abstract
     public function exportCustomerHistory($data)
     {
         return $this->apiClient($data, 'api/events/history/prospects');
+    }
+    
+    public function getAllProductPrices($product)
+    {
+        $res = array();
+        
+        // special price
+        if ($product->getSpecialPrice())
+        {
+            $productPrice = $this->buildPriceItem($product);
+            $res[] = $productPrice;
+        }
+        
+        //group price
+        $groupPrices = $this->getProductGroupPrices($product);
+        
+        if ($groupPrices)
+        {
+            foreach ($groupPrices as $groupPrice)
+            {
+                $productPrice = $this->buildPriceItem($product, $groupPrice);
+                $res[] = $productPrice;
+            }
+        }
+        
+        // tier price
+        $tierPrices = $this->getProductGroupPrices($product, 'tier');
+        
+        if ($tierPrices)
+        {
+            foreach ($tierPrices as $tierPrice)
+            {
+                $productPrice = $this->buildPriceItem($product, $tierPrice);
+                $res[] = $productPrice;
+            }
+        }
+
+        return $res;
+    }
+    
+    public function getProductRelationsJson($product)
+    {
+        $res = array();
+        
+        if ($product->getRelatedProducts())
+        {
+            $relatedProducts = $product->getRelatedProducts();
+            
+            foreach ($relatedProducts as $relatedProduct)
+            {
+                $relatedProductData = $relatedProduct->getData();
+                
+                $res[] = array(
+                        'relation_product_id' => $relatedProductData['entity_id'],
+                        'relation_type'       => $relatedProductData['entity_type_id'],
+                        'relation_priority'   => $relatedProductData['position']
+                    );
+            }
+        }
+                
+        return $res;
+    }
+    
+    public function getProductHistory($pageSize = 20, $page = 1)
+    {   
+        $dataExport = array(
+                'products' => array()
+            );
+        
+        $products = Mage::getModel('catalog/product')
+            ->getCollection()
+            ->addAttributeToSelect('*')
+            ->joinField('qty',
+                 'cataloginventory/stock_item',
+                 'qty',
+                 'product_id=entity_id',
+                 '{{table}}.stock_id=1',
+                 'left')
+            ->setPageSize($pageSize)
+            ->setCurPage($page);
+
+        foreach ($products as $productItem)
+        {
+            // prepare prices array
+            $productPrice = $this->getAllProductPrices($productItem);
+            
+            // prepare categories array
+            $productCategory = array();
+            $categories = $productItem->getCategoryIds();
+            
+            foreach ($categories as $categoryId)
+            {
+                $category     = Mage::getModel('catalog/category')->load($categoryId);
+                $categoryName = $category->getName();
+                
+                // this structure is needed on the backend
+                $productCategory[] = array(
+                    'product_category_type' => array(
+                        'category_id'   => $categoryId ? $categoryId : "",
+                        'category_name' => $categoryName
+                    )
+                );
+            }
+            
+            // prepare relations array
+            $productRelation = $this->getProductRelationsJson($productItem);
+            
+            // complete product array
+            $product = array (
+                    'product_id'               => $productItem->getId(),
+                    'parent_id'                => $productItem->getId(),
+                    'product_name'             => $productItem->getName() ? $productItem->getName() : "",
+                    'product_desc'             => $productItem->getDescription(),
+                    'product_create_date'      => $productItem->getCreatedAt(),
+                    'product_sku'              => $productItem->getSku(),
+                    'product_image'            => $this->getProdImg($productItem),
+                    'product_url'              => $this->getProdUrl($productItem),
+                    'product_qty'              => $productItem->getQty(),
+                    'product_default_price'    => $productItem->getPrice(),
+                    'product_prices'           => $productPrice,
+                    'product_categories'       => $productCategory,
+                    'product_relations'        => $productRelation,
+                    'product_is_removed'       => null,
+                    'product_is_active'        => $productItem->getStatus(),
+                    'product_active_from'      => $productItem->getCustomDesignFrom(),
+                    'product_active_to'        => $productItem->getCustomDesignTo(),
+                    'product_show_as_new_from' => $productItem->getNewsFromDate(),
+                    'product_show_as_new_to'   => $productItem->getNewsToDate()
+                );
+            
+            $dataExport['products'][] = $product;
+        }
+            
+        return $dataExport;
+    }
+    
+    public function getProductEditData($observer)
+    {
+        $productItem = $observer->getEvent()->getProduct();
+        
+        // prepare prices array
+        $productPrice = $this->getAllProductPrices($productItem);
+        
+        // prepare categories array
+        $productCategory = array();
+        $categories = $productItem->getCategoryIds();
+        
+        foreach ($categories as $categoryId)
+        {
+            $category     = Mage::getModel('catalog/category')->load($categoryId);
+            $categoryName = $category->getName();
+                
+            // this structure is needed on the backend
+            $productCategory[] = array(
+                'product_category_type' => array(
+                    'category_id'   => $categoryId ? $categoryId : "",
+                    'category_name' => $categoryName
+                )
+            );
+        }
+        
+        // prepare relations array
+        $productRelation = $this->getProductRelationsJson($productItem);
+            
+        // complete product array
+        $product = array (
+                'product_id'               => $productItem->getId(),
+                'parent_id'                => $productItem->getId(),
+                'product_name'             => $productItem->getName() ? $productItem->getName() : "",
+                'product_desc'             => $productItem->getDescription(),
+                'product_create_date'      => $productItem->getCreatedAt(),
+                'product_sku'              => $productItem->getSku(),
+                'product_image'            => $this->getProdImg($productItem),
+                'product_url'              => $this->getProdUrl($productItem),
+                'product_qty'              => $productItem->getQty(),
+                'product_default_price'    => $productItem->getPrice(),
+                'product_prices'           => $productPrice,
+                'product_categories'       => $productCategory,
+                'product_relations'        => $productRelation,
+                'product_is_removed'       => null,
+                'product_is_active'        => $productItem->getStatus(),
+                'product_active_from'      => $productItem->getCustomDesignFrom(),
+                'product_active_to'        => $productItem->getCustomDesignTo(),
+                'product_show_as_new_from' => $productItem->getNewsFromDate(),
+                'product_show_as_new_to'   => $productItem->getNewsToDate()
+            );
+        
+        return $product;
+    }
+    
+    public function exportProductData($data, $url, $token)
+    {
+        return $this->apiClient($data, 'api/products/import', $url, $token);
     }
 }
