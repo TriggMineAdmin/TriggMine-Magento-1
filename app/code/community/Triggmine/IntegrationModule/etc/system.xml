@@ -8,14 +8,14 @@
             <sort_order>600</sort_order>
             <show_in_default>0</show_in_default>
             <show_in_website>1</show_in_website>
-            <show_in_store>0</show_in_store>
+            <show_in_store>1</show_in_store>
             <groups>
                 <info>
                     <frontend_model>integrationmodule/adminhtml_system_config_info</frontend_model>
                     <sort_order>0</sort_order>
                     <show_in_default>0</show_in_default>
                     <show_in_website>1</show_in_website>
-                    <show_in_store>0</show_in_store>
+                    <show_in_store>1</show_in_store>
                 </info>
                 <settings translate="label">
                     <label>TriggMine Settings</label>
@@ -23,7 +23,7 @@
                     <sort_order>10</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
-                    <show_in_store>1</show_in_store>
+                    <show_in_store>0</show_in_store>
                     <fields>
                         <is_on translate="label">
                             <label>Enable TriggMine</label>
@@ -59,8 +59,8 @@
                     <frontend_type>text</frontend_type>
                     <sort_order>20</sort_order>
                     <show_in_default>0</show_in_default>
-                    <show_in_website>1</show_in_website>
-                    <show_in_store>0</show_in_store>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>1</show_in_store>
                     <fields>
                         <export translate="label">
                             <label>Enable Order Export</label>
@@ -68,8 +68,8 @@
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>50</sort_order>
                             <show_in_default>0</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>1</show_in_store>
                         </export>
                         <my_date_from translate="label">
                             <label>Export date from</label>
@@ -77,8 +77,8 @@
                             <frontend_model>integrationmodule/adminhtml_system_config_date</frontend_model>
                             <sort_order>60</sort_order>
                             <show_in_default>0</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>1</show_in_store>
                             <comment>Set the Date from to export orders</comment>
                         </my_date_from>
                         <my_date_to translate="label">
@@ -87,8 +87,8 @@
                             <frontend_model>integrationmodule/adminhtml_system_config_date</frontend_model>
                             <sort_order>70</sort_order>
                             <show_in_default>0</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>1</show_in_store>
                             <comment>Set the Date to to export orders</comment>
                         </my_date_to>
                     </fields>
@@ -98,8 +98,8 @@
                     <frontend_type>text</frontend_type>
                     <sort_order>80</sort_order>
                     <show_in_default>0</show_in_default>
-                    <show_in_website>1</show_in_website>
-                    <show_in_store>0</show_in_store>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>1</show_in_store>
                     <fields>
                         <export translate="label">
                             <label>Enable Customer Export</label>
@@ -107,8 +107,8 @@
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>50</sort_order>
                             <show_in_default>0</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>1</show_in_store>
                         </export>
                         <my_date_from translate="label">
                             <label>Export date from</label>
@@ -116,8 +116,8 @@
                             <frontend_model>integrationmodule/adminhtml_system_config_date</frontend_model>
                             <sort_order>60</sort_order>
                             <show_in_default>0</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>1</show_in_store>
                             <comment>Set the Date from to export customers</comment>
                         </my_date_from>
                         <my_date_to translate="label">
@@ -126,8 +126,8 @@
                             <frontend_model>integrationmodule/adminhtml_system_config_date</frontend_model>
                             <sort_order>70</sort_order>
                             <show_in_default>0</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>1</show_in_store>
                             <comment>Set the Date to to export customers</comment>
                         </my_date_to>
                     </fields>
@@ -137,8 +137,8 @@
                     <frontend_type>text</frontend_type>
                     <sort_order>90</sort_order>
                     <show_in_default>0</show_in_default>
-                    <show_in_website>1</show_in_website>
-                    <show_in_store>0</show_in_store>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>1</show_in_store>
                     <fields>
                         <export translate="label">
                             <label>Enable Product Export</label>
@@ -146,8 +146,8 @@
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>50</sort_order>
                             <show_in_default>0</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>1</show_in_store>
                         </export>
                     </fields>
                 </triggmine_product_export>
@@ -156,14 +156,14 @@
                     <sort_order>100</sort_order>
                     <show_in_default>0</show_in_default>
                     <show_in_website>1</show_in_website>
-                    <show_in_store>0</show_in_store>
+                    <show_in_store>1</show_in_store>
                 </footer>
                 <product_export>
                     <frontend_model>integrationmodule/adminhtml_system_config_productexport</frontend_model>
                     <sort_order>100</sort_order>
                     <show_in_default>0</show_in_default>
                     <show_in_website>1</show_in_website>
-                    <show_in_store>0</show_in_store>
+                    <show_in_store>1</show_in_store>
                 </product_export>
             </groups>
         </triggmine>

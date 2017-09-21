@@ -99,17 +99,15 @@ class Triggmine_IntegrationModule_Model_Observer
     {
         if (Mage::helper('integrationmodule/data')->isEnabledByProduct($observer))
         {
-            // $websites = Mage::helper('integrationmodule/data')->isEnabledByProduct($observer);
-            // foreach ($websites as $websiteId)
-            // {
-            //     $url   = Mage::app()->getWebsite($websiteId)->getConfig('triggmine/settings/url_api');
-            //     $token = Mage::app()->getWebsite($websiteId)->getConfig('triggmine/settings/token');
+            $websites = Mage::helper('integrationmodule/data')->isEnabledByProduct($observer);
+            foreach ($websites as $websiteId)
+            {
+                $url   = Mage::app()->getWebsite($websiteId)->getConfig('triggmine/settings/url_api');
+                $token = Mage::app()->getWebsite($websiteId)->getConfig('triggmine/settings/token');
 
-            //     $data = Mage::helper('integrationmodule/data')->getProductData($observer);
-            //     Mage::log(json_encode($data), null, 'export.log');
-            //     $res=Mage::helper('integrationmodule/data')->exportProductData($data, $url, $token);
-            //     Mage::log($res, null, 'export.log');
-            // }
+                $data = Mage::helper('integrationmodule/data')->getProductEditData($observer);
+                Mage::helper('integrationmodule/data')->exportProductData($data, $url, $token);
+            }
         }
     }
 }

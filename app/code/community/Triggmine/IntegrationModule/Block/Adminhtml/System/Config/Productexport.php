@@ -7,18 +7,21 @@ class Triggmine_IntegrationModule_Block_Adminhtml_System_Config_Productexport ex
     public function __construct()
     {
         $this->_productExportStep = 20;
+        $this->_websiteCode = Mage::getSingleton('adminhtml/config_data')->getWebsite();
+        $this->_websiteId   = Mage::getModel('core/website')->load($this->_websiteCode)->getId();
+        $this->_storeId     = Mage::app()->getWebsite($this->_websiteId)->getDefaultStore()->getId();
     }
     
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
-        $websiteCode = Mage::getSingleton('adminhtml/config_data')->getWebsite();
-        $websiteId   = Mage::getModel('core/website')->load($websiteCode)->getId();
+        $pageSize      = $this->_productExportStep;
+        $websiteId     = $this->_websiteId;
+        $storeId       = $this->_storeId;
         
         $pluginSetUp   = Mage::app()->getWebsite($websiteId)->getConfig('triggmine/settings/plugin_set_up');
-        $productExport = Mage::app()->getWebsite($websiteId)->getConfig('triggmine/triggmine_product_export/export');
+        $productExport = Mage::getStoreConfig('triggmine/triggmine_product_export/export', $storeId);
         $pluginEnabled = Mage::helper('integrationmodule/data')->isEnabled();
-        $pageSize      = $this->_productExportStep;
-        
+
         // manual product export
         if ($productExport)
         {
@@ -32,8 +35,9 @@ class Triggmine_IntegrationModule_Block_Adminhtml_System_Config_Productexport ex
         
         if ($pluginEnabled && !$pluginSetUp) // TO DO more complex integration check
         {
-            $productPool = Mage::getModel('catalog/product')->getCollection();
-
+            $productPool = Mage::getModel('catalog/product')->getCollection()
+                            ->addStoreFilter($storeId);
+            
             $productPool->setPageSize($pageSize);
             $pages = $productPool->getLastPageNumber();
             $currentPage = $productPool->setCurPage(1);
@@ -94,7 +98,7 @@ class Triggmine_IntegrationModule_Block_Adminhtml_System_Config_Productexport ex
                                 var pages = $pages;
 
                                 var xhttp    = new XMLHttpRequest();
-                                var bodyBase = 'apiURL=$apiURL&apiToken=$apiToken&pagesTotal=$pages&pageSize=$pageSize&website=$websiteId&page=';
+                                var bodyBase = 'apiURL=$apiURL&apiToken=$apiToken&pagesTotal=$pages&pageSize=$pageSize&website=$websiteId&store=$storeId&page=';
                                 
                                 var exportStatus = document.getElementById('triggmine-export-status');
                                 

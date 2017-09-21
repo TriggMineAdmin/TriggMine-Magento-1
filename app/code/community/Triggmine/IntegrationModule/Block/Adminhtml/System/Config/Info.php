@@ -4,15 +4,17 @@ class Triggmine_IntegrationModule_Block_Adminhtml_System_Config_Info extends Mag
 {
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
-        $version    = (string) Mage::getConfig()->getNode('modules/Triggmine_IntegrationModule/version');
-        $website    = (string) Mage::getSingleton('adminhtml/config_data')->getWebsite();
-        $siteName   = (string) Mage::getModel('core/website')->load($website)->getName();
+        $version     = (string) Mage::getConfig()->getNode('modules/Triggmine_IntegrationModule/version');
+        $website     = (string) Mage::getSingleton('adminhtml/config_data')->getWebsite();
+        $siteName    = (string) Mage::getModel('core/website')->load($website)->getName();
+        $fullBaseURL = (string) Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB);
+        $baseURL     = str_replace('/', '', substr($fullBaseURL, strpos($fullBaseURL, '://') + 3));
         
         $html = "";
         
         $html .= "<div style=\"padding: 1em; margin: 1em 0; border: 0 solid #eee; border-left-width: 5px; border-radius: 0; background-color: #fafafa; border-left-color: #eb5e00; color: #eb5e00;\">";
         $html .= "<h4 style=\"font-size: 18px; line-height: 18px; margin: 0 0 4px; color: #6f8992;\">TriggMine v" . $version . " for " . $siteName . "</h4>";
-        $html .= "<p style=\"margin: 0;\">Visit the <b><a href=\"https://triggmine.freshdesk.com/solution/articles/22000037925-setting-the-module-parameters\" target=\"_blank\">Magento getting started guide</a></b> for instructions on configuring TriggMine. Or contact <a href=\"mailto:support@triggmine.com\" target=\"_blank\">support@triggmine.com</a></p>";
+        $html .= "<p style=\"margin: 0;\"><b><a href=\"https://client.triggmine.com/signup?utm_source=" . $baseURL . "\" target=\"_blank\">Sign Up</a></b> and visit the <b><a href=\"https://triggmine.freshdesk.com/solution/articles/22000037925-setting-the-module-parameters\" target=\"_blank\">Magento getting started guide</a></b> for instructions on configuring TriggMine. Or contact <a href=\"mailto:support@triggmine.com\" target=\"_blank\">support@triggmine.com</a></p>";
         $html .= "</div>";
 
         return $html;
