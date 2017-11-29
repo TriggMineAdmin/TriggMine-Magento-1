@@ -4,17 +4,28 @@ class Triggmine_IntegrationModule_Model_Observer
 {
     public function send_page_init(Varien_Event_Observer $observer)
     {   
-        if (Mage::helper('integrationmodule/data')->isEnabled())
+        if (Mage::helper('integrationmodule/data')->isBot())
         {
-            $data = Mage::helper('integrationmodule/data')->PageInit($observer);
-            if ($data) {
-                Mage::helper('integrationmodule/data')->onPageInit($data);
+            // bot detected
+            // Mage::log('bot detected: ' . Mage::helper('core/http')->getHttpUserAgent(), null, 'pageinit.log');
+        }
+        else
+        {
+            if (Mage::helper('integrationmodule/data')->isEnabled())
+            {
+                $data = Mage::helper('integrationmodule/data')->PageInit($observer);
+                if ($data) {
+                    Mage::helper('integrationmodule/data')->onPageInit($data);
+                }
             }
         }
     }    
     
     public function diagnostic_information_updated(Varien_Event_Observer $observer)
     {   
+        $data = Mage::helper('integrationmodule/data')->getDiagnosticInfo( 'ConfigurePlugin' );
+        $res = Mage::helper('integrationmodule/data')->sendExtendedDiagnostic($data);
+        
         $data = Mage::helper('integrationmodule/data')->SoftChek($observer);
         $res = Mage::helper('integrationmodule/data')->onDiagnosticInformationUpdated($data);
         

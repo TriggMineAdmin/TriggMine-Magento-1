@@ -15,10 +15,11 @@ class Triggmine_IntegrationModule_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_CUSTOMER_DATE_TO      = 'triggmine/triggmine_customer_export/my_date_to';
     const XML_PATH_PRODUCT_EXPORT        = 'triggmine/triggmine_product_export/export';
     const XML_PATH_PLUGIN_SET_UP         = 'triggmine/settings/plugin_set_up'; // 0 if it's the first time user installs the plugin, 1 if it's set up and product export is already performed
-    const VERSION_PLUGIN                 = '3.0.23';
+    const VERSION_PLUGIN                 = '3.0.23.1';
 
     protected $_cartItemRepository;
     protected $_customerRepository;
+    protected $_triggmineDiagnosticURL;
     protected $_customerSession;
     protected $_cookieManager;
     protected $_websiteCode;
@@ -41,6 +42,8 @@ class Triggmine_IntegrationModule_Helper_Data extends Mage_Core_Helper_Abstract
         $this->_cookieManager       = Mage::getModel('core/cookie');
         $this->_customerSession     = Mage::getSingleton('customer/session');
         $this->_customerRepository  = Mage::getModel("customer/customer");
+        
+        $this->_triggmineDiagnosticURL = 'plugindiagnostic.triggmine.com';
         
         $this->_websiteCode         = Mage::getSingleton('adminhtml/config_data')->getWebsite();
         $this->_websiteId           = Mage::getModel('core/website')->load($this->_websiteCode)->getId();
@@ -193,6 +196,13 @@ class Triggmine_IntegrationModule_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return $this->_cookieManager->get('device_id_1');
     }
+    
+    public function isBot()
+	{
+	   preg_match('/bot|curl|spider|google|facebook|yandex|bing|aol|duckduckgo|teoma|yahoo|twitter^$/i', $_SERVER['HTTP_USER_AGENT'], $matches);
+	
+	   return (empty($matches)) ? false : true;
+	}
 
     public function normalizeName($name)
     {
@@ -495,6 +505,38 @@ class Triggmine_IntegrationModule_Helper_Data extends Mage_Core_Helper_Abstract
     public function onDiagnosticInformationUpdated($data)
     {
         return $this->apiClient($data, 'control/api/plugin/onDiagnosticInformationUpdated');
+    }
+    
+    public function getDiagnosticInfo( $diagnosticTtype = 'InstallPlugin' ) 
+    {
+        $versionMage    = Mage::getVersion();
+        $versionPlugin  = self::VERSION_PLUGIN;
+        $datetime       = Mage::getModel('core/date')->date('Y-m-d\TH:i:s');
+        
+        $data = array(
+            'DateCreated'                   => $datetime,
+            'DiagnosticType'                => $diagnosticTtype,
+            'Description'                   => 'Magento ' . $versionMage . ' Plugin ' . $versionPlugin,
+            'Remarks'                       => 'LoLoLo',
+            'Host'                          => Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB),
+            'EmailAdmin'                    => Mage::getStoreConfig('trans_email/ident_general/email', $this->_storeId),
+            'StatusEnableTriggmine'         => $this->_pluginOn,
+            'StatusEnableOrderExport'       => $this->_enableOrderExport,
+            'StatusEnableCustomerExport'    => $this->_enableCustomerExport,
+            'ApiUrl'                        => $this->_url,
+            'ApiKey'                        => $this->_token,
+            'OrderExportDateFrom'           => $this->_exportOrderFromDate,
+            'OrderExportDateTo'             => $this->_exportOrderToDate,
+            'CustomerExportDateFrom'        => $this->_exportCustomerFromDate,
+            'CustomerExportDateTo'          => $this->_exportCustomerToDate
+        );
+    
+        return $data;
+    }
+    
+    public function sendExtendedDiagnostic($data)
+    {
+        return $this->apiClient($data, 'api/diagnostic', $this->_triggmineDiagnosticURL);
     }
     
     public function PageInit($observer)
